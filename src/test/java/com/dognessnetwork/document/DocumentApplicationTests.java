@@ -32,13 +32,13 @@ public class DocumentApplicationTests {
 		File	file1	=	new	File(file.getParentFile().getParent()+"/img/123.txt");
 		System.out.println(file1.getParentFile().getPath());*/
 		/*******************************/
-		HashMap<String, Object> paramMap = new HashMap<>();
+		/*HashMap<String, Object> paramMap = new HashMap<>();
 	
 
 		//文件上传只需将参数中的键指定（默认file），值设为文件对象即可，对于使用者来说，文件上传与普通表单提交并无区别
 		paramMap.put("file", FileUtil.file("E:/Pictures/tupian/dgmyq.jpg"));
 		String result= HttpUtil.post("https://www.dognessnetwork.com/document/image_animal", paramMap);
-		Console.log(result);
+		Console.log(result);*/
 	}
 	
 }
