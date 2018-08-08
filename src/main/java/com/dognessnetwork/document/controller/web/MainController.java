@@ -41,27 +41,31 @@ import cn.hutool.json.JSONObject;
 public class MainController {
 	@RequestMapping(value = "/image", name = "image")
 	@ResponseBody
-	public JSONObject image(@RequestParam("file") MultipartFile file, HttpServletRequest mrequest) {
+	public JSONObject image(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
 		
-		String path = mrequest.getSession().getServletContext().getRealPath("/");
-		System.out.println("path:"+path);
-		String url = "";
+		
+		StringBuffer url = request.getRequestURL();  
+        String tempContextUrl = url.delete(url.length() - request.getRequestURI().length(), url.length()).toString(); 
+        Console.log(tempContextUrl);
+        
 		String filename = UploadFileUtil.generatorFileName() + "." + UploadFileUtil.getMultipartFileType(file);
 		System.out.println("filename:" + filename);
-		String urlh = mrequest.getRequestURL().substring(0,
-				mrequest.getRequestURL().length() - mrequest.getRequestURI().length());
+		/*String urlh = request.getRequestURL().substring(0,
+				request.getRequestURL().length() - request.getRequestURI().length());*/
 		JSONObject	res	=	new	JSONObject();
 		JSONObject	header	=	new	JSONObject();
+		String path = request.getSession().getServletContext().getRealPath("/");
+		System.out.println("path:"+path);
 		try {
-			url = UploadFileUtil.saveImage(file, path, filename);
+			UploadFileUtil.saveImage(file, path, filename);
 			System.out.println("filename:" + url);
-			header.put("code", 1000);
+			header.put("status", 1000);
     		header.put("message", "success");
     		res.put("header", header);
-    		res.put("data", urlh + "/img/"+filename);
+    		res.put("data", tempContextUrl + "/img/"+filename);
 			return res;
 		} catch (Exception e) {
-			header.put("code", 2000);
+			header.put("status", 2000);
     		header.put("message", "fail");
     		res.put("header", header);
     		res.put("data", "");
@@ -71,16 +75,18 @@ public class MainController {
 	}
 	@RequestMapping(value = "/image_animal")
 	@ResponseBody
-	public JSONObject image_recognition(@RequestParam("file") MultipartFile file, HttpServletRequest mrequest) {
-		String path = mrequest.getSession().getServletContext().getRealPath("/");
-		System.out.println("path:"+path);
-		
+	public JSONObject image_recognition(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+		StringBuffer url = request.getRequestURL();  
+        String tempContextUrl = url.delete(url.length() - request.getRequestURI().length(), url.length()).toString(); 
+        Console.log(tempContextUrl);
 		String filename = UploadFileUtil.generatorFileName() + "." + UploadFileUtil.getMultipartFileType(file);
 		System.out.println("filename:" + filename);
 		JSONObject	res	=	new	JSONObject();
 		JSONObject	header	=	new	JSONObject();
-        String urlh = mrequest.getRequestURL().substring(0,
-				mrequest.getRequestURL().length() - mrequest.getRequestURI().length());
+       /* String urlh = request.getRequestURL().substring(0,
+        		request.getRequestURL().length() - request.getRequestURI().length());*/
+		String path = request.getSession().getServletContext().getRealPath("/");
+		System.out.println("path:"+path);
 		try {
 			//先保存到项目根目录
 			UploadFileUtil.saveAnimalImage(file, path, filename);
@@ -115,16 +121,16 @@ public class MainController {
 	        
 	        System.out.println(baiduRes.toString(0));
 	        
-	        baiduRes.putOpt("path", urlh + "/img/animal/"+filename);
+	        baiduRes.putOpt("path", tempContextUrl + "/img/animal/"+filename);
 	        
-			header.put("code", 1000);
+			header.put("status", 1000);
     		header.put("message", "success");
     		res.put("header", header);
     		res.put("data", baiduRes.toString(0));
     		
 	        return res;
 		} catch (Exception e) {
-			header.put("code", 2000);
+			header.put("status", 2000);
     		header.put("message", "fail");
     		res.put("header", header);
     		res.put("data", "");
@@ -144,9 +150,12 @@ public class MainController {
 			@RequestParam("content")	String	content,
 			@RequestParam(value="size",required=false)	Integer	size) {
 		String path = mrequest.getSession().getServletContext().getRealPath("/");
-		String urlh = mrequest.getRequestURL().substring(0,
-				mrequest.getRequestURL().length() - mrequest.getRequestURI().length());
 		
+		/*String urlh = mrequest.getRequestURL().substring(0,
+				mrequest.getRequestURL().length() - mrequest.getRequestURI().length());*/
+		StringBuffer uri = mrequest.getRequestURL();  
+		String tempContextUrl = uri.delete(uri.length() - mrequest.getRequestURI().length(), uri.length()).toString(); 
+		Console.log(tempContextUrl);
 		//获取当前时间对象  
         Date date = new Date(); 
         //获取日期格式器
@@ -171,7 +180,7 @@ public class MainController {
     		Console.log("最终访问路径："+file.getAbsolutePath());
     		JSONObject	url	=	new	JSONObject();
     		CreatePdf.addImageAbsolu(file.getPath(), file.getParent()+"/pdf/"+fileName+".pdf",content);
-    		url.put("url", urlh+"/img/deviceQr/"
+    		url.put("url", tempContextUrl+"/img/deviceQr/"
 					+	type+"/"
 					+	productModel+"/"
 					+	deviceSession+"/"
@@ -216,10 +225,12 @@ public class MainController {
 		
 		String path = request.getSession().getServletContext().getRealPath("/");
 		System.out.println("path:"+path);
-		String url = "";
 		String	fileName	=	System.currentTimeMillis()+".png";
-		String urlh = request.getRequestURL().substring(0,
-				request.getRequestURL().length() - request.getRequestURI().length());
+		/*String urlh = request.getRequestURL().substring(0,
+				request.getRequestURL().length() - request.getRequestURI().length());*/
+		StringBuffer url = request.getRequestURL();  
+		String tempContextUrl = url.delete(url.length() - request.getRequestURI().length(), url.length()).toString(); 
+		
 		File filePath = new File(path);
 		File	newPath	=new	File(filePath.getParentFile().getPath()+"/img/"+fileName);
 		if (!filePath.exists()) {
@@ -231,14 +242,14 @@ public class MainController {
 		
 		try {
 			ImageIO.write(ImageUtil.toImage(data),"png",newPath);
-			System.out.println("filename:" + url);
-			header.put("code", 1000);
+			System.out.println("filename:" + fileName);
+			header.put("status", 1000);
     		header.put("message", "success");
     		res.put("header", header);
-    		res.put("data", urlh + "/img/"+fileName);
+    		res.put("data", tempContextUrl + "/img/"+fileName);
 			return res;
 		} catch (Exception e) {
-			header.put("code", 2000);
+			header.put("status", 2000);
     		header.put("message", "fail");
     		res.put("header", header);
     		res.put("data", "");

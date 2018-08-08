@@ -188,6 +188,30 @@ public class UploadFileUtil {
 			String localfileName = newPath.getPath() + "/" + filename+".png";
 			return localfileName;
 		}
+		
+		/**
+		 * 获取文件路径
+		 * @param path
+		 * @param filename
+		 * @return
+		 */
+		public static String getCreateQRCodePath(String path, String filename) {
+			// String filename = file.getOriginalFilename();
+			  
+			File filePath = new File(path);
+			File	newPath	=	new	File(filePath.getParentFile().getPath()
+							+	"/img/createQrCode/");
+			
+			if (!filePath.exists()) {
+				filePath.mkdirs();
+			}
+			if (!newPath.exists()) {
+				newPath.mkdirs();
+			}
+			
+			String localfileName = newPath.getPath() + "/" + filename+".png";
+			return localfileName;
+		}
 		public static boolean deleteFile(String realPath, String sysPath) {
 			String filePath = realPath + sysPath.substring(10);
 			// System.out.println("filePath" + filePath);

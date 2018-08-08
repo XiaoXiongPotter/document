@@ -19,7 +19,7 @@ public class Constants {
     public static String NECKLACE_CONTEXT_PATH = "";
     public static String DOCUMENT_CONTEXT_DOMAIN = "";
     public static String AREA;
-	public static String HTTP_KEY = "";	
+	public static String HTTP_KEY = "89622EF8B92F78B7A0FB105AAD1WRUDI";	
 	public static String SOCKETURL = "wss://www.dognessnetwork.com/point/websocket/point";
 	public final static String TOKEN = "x_auth_token";
 	static {

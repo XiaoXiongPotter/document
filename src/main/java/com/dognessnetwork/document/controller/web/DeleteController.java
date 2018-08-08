@@ -38,7 +38,7 @@ public class DeleteController {
 			SignUtils.VerifySign(parameters, rquest.getHeader("sign"));
 		} catch (InvalidSignException e) {
 			// TODO: handle exception
-			header.put("code", 7000);
+			header.put("status", 7000);
     		header.put("message", "exception");
     		res.put("header", header);
     		res.put("data", "");
@@ -50,14 +50,14 @@ public class DeleteController {
 		Console.log(path+imgPath.substring(imgPath.indexOf("img")));
 		File	oldFile	=	new	File(path+imgPath.substring(imgPath.indexOf("img")));
 		if(oldFile.delete()){
-			header.put("code", 1000);
+			header.put("status", 1000);
     		header.put("message", "success");
     		res.put("header", header);
     		res.put("data", true);
     		
 	        return res;
 		}else{
-			header.put("code", 2000);
+			header.put("status", 2000);
     		header.put("message", "fail");
     		res.put("header", header);
     		res.put("data", false);

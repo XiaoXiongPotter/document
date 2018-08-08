@@ -20,7 +20,7 @@ public class SignUtils {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static String creatSign(SortedMap<Object, Object> parameters){
-		String key = Constants.HTTP_KEY;
+		String key = "89622EF8B92F78B7A0FB105AAD1WRUDI";
 		StringBuffer sb = new StringBuffer();
 		Set es = parameters.entrySet();//所有参与传参的参数按照accsii排序（升序）
 		Iterator it = es.iterator();
