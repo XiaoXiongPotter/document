@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dognessnetwork.document.util.FileToPack;
 import com.dognessnetwork.document.util.ZipCompress;
+
+import cn.hutool.core.lang.Console;
 @Controller
 public class DownloadController {
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
@@ -54,4 +57,66 @@ public class DownloadController {
       }
       System.out.println("success");
     }
+	
+	/**
+	 * http://manager.dognessnetwork.com/document/DognessPlay.apk
+	 * 安卓机器狗与面包机
+	 * @param res
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/DognessPlay.apk", method = RequestMethod.GET)
+    public String DownloadApk(HttpServletResponse res,HttpServletRequest	req) {
+		StringBuffer url = req.getRequestURL();  
+		String tempContextUrl = url.delete(url.length() - req.getRequestURI().length(), url.length()).toString(); 
+		Console.log(tempContextUrl+"/app/DognessPlay.apk");
+		return	"redirect:"+tempContextUrl+"/app/DognessPlay.apk";
+	}
+	
+	/**
+	 * http://manager.dognessnetwork.com/document/DognessFeeder
+	 * 安卓喂食器与投食器
+	 * @param res
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/DognessFeeder", method = RequestMethod.GET)
+    public String jj(HttpServletResponse res,HttpServletRequest	req) {
+		StringBuffer url = req.getRequestURL();  
+		String tempContextUrl = url.delete(url.length() - req.getRequestURI().length(), url.length()).toString(); 
+		Console.log(tempContextUrl+"/app/DognessFeeder.apk");
+		return	"redirect:"+tempContextUrl+"/app/DognessFeeder.apk";
+	}
+	
+	
+	/**
+	 * http://manager.dognessnetwork.com/document/DognessPlay_ios
+	 * 苹果机器狗与面包机
+	 * @param res
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/DognessPlay_ios", method = RequestMethod.GET)
+    public String DognessPlay_ios(HttpServletResponse res,HttpServletRequest	req) {
+		StringBuffer url = req.getRequestURL();  
+		String tempContextUrl = url.delete(url.length() - req.getRequestURI().length(), url.length()).toString(); 
+		Console.log(tempContextUrl+"/app/DognessPlay.apk");
+		return	"redirect:"+tempContextUrl+"/app/DognessPlay.apk";
+	}
+	
+	/**
+	 * http://manager.dognessnetwork.com/document/DognessFeeder_ios
+	 * 苹果喂食器与投食器
+	 * @param res
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/DognessFeeder_ios", method = RequestMethod.GET)
+    public String DognessFeeder_ios(HttpServletResponse res,HttpServletRequest	req) {
+		StringBuffer url = req.getRequestURL();  
+		String tempContextUrl = url.delete(url.length() - req.getRequestURI().length(), url.length()).toString(); 
+		Console.log(tempContextUrl+"/app/DognessFeeder.apk");
+		return	"redirect:https://itunes.apple.com/cn/app/id1423516347";
+	}
+	
 }

@@ -99,6 +99,11 @@ public class MainController {
 	        options.put("top_num", "3");
 	        // 参数为本地图片路径
 	        org.json.JSONObject baiduRes = client.animalDetect(path + "/"+filename, options);
+	        String	name	=	baiduRes.getJSONArray("result").getJSONObject(0).getString("name");
+	        Console.log(name);
+	        if(name.equals("非动物")){
+	        	
+	        }
 	        //将图片剪切到img/animal/目录下
 	        File	copy	=	new	File(path + "/"+filename);
 	        File	mu	=	new	File(copy.getParentFile().getParent()+"/img/animal/");
@@ -173,7 +178,7 @@ public class MainController {
 			BufferedImage bufferedImage = QrCodeUtil.generate(content, size, size);
 			File	file	=	new File(finalPath);
     		ImageIO.write(bufferedImage,"png",file);
-    		header.put("code", 1000);
+    		header.put("status", 1000);
     		header.put("message", "success");
     		res.put("header", header);
     		Console.log("最终保存路径："+file.getPath());
@@ -190,7 +195,7 @@ public class MainController {
     		res.put("data", url);
 			return res;
 		} catch (Exception e) {
-    		header.put("code", 2000);
+    		header.put("status", 2000);
     		header.put("message", "fail");
     		res.put("header", header);
     		res.put("data", "");
@@ -215,7 +220,7 @@ public class MainController {
 			SignUtils.VerifySign(parameters, request.getHeader("sign"));
 		} catch (InvalidSignException e) {
 			// TODO: handle exception
-			header.put("code", 7000);
+			header.put("status", 7000);
     		header.put("message", "exception");
     		res.put("header", header);
     		res.put("data", "");
@@ -246,7 +251,7 @@ public class MainController {
 			header.put("status", 1000);
     		header.put("message", "success");
     		res.put("header", header);
-    		res.put("data", tempContextUrl + "/img/"+fileName);
+    		res.put("data", /*tempContextUrl + */"/img/"+fileName);
 			return res;
 		} catch (Exception e) {
 			header.put("status", 2000);
@@ -256,5 +261,44 @@ public class MainController {
 			return res;
 		}
 		
+	}
+	
+	@RequestMapping(value = "/bufferedImage", name = "bufferedImage")
+	@ResponseBody
+	public JSONObject bufferedImage(BufferedImage bufferedImage,HttpServletRequest request){
+		JSONObject	res	=	new	JSONObject();
+		JSONObject	header	=	new	JSONObject();
+		String path = request.getSession().getServletContext().getRealPath("/");
+		System.out.println("path:"+path);
+		String	fileName	=	System.currentTimeMillis()+".png";
+		/*String urlh = request.getRequestURL().substring(0,
+				request.getRequestURL().length() - request.getRequestURI().length());*/
+		StringBuffer url = request.getRequestURL();  
+		String tempContextUrl = url.delete(url.length() - request.getRequestURI().length(), url.length()).toString(); 
+		
+		File filePath = new File(path);
+		File	newPath	=new	File(filePath.getParentFile().getPath()+"/img/"+fileName);
+		if (!filePath.exists()) {
+			filePath.mkdirs();
+		}
+		if (!newPath.exists()) {
+			newPath.mkdirs();
+		}
+		
+		try {
+			ImageIO.write(bufferedImage,"png",newPath);
+			System.out.println("filename:" + fileName);
+			header.put("status", 1000);
+    		header.put("message", "success");
+    		res.put("header", header);
+    		res.put("data", tempContextUrl+"/img/"+fileName);
+			return res;
+		} catch (Exception e) {
+			header.put("status", 2000);
+    		header.put("message", "fail");
+    		res.put("header", header);
+    		res.put("data", "");
+			return res;
+		}
 	}
 }
