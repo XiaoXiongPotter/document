@@ -81,6 +81,7 @@ public class UploadFileUtil {
 			}
 			
 			String localfileName = newPath.getPath() + "/" + filename;
+			System.out.println("localfileName:"+localfileName);
 			// 写入文件
 			File dest = new File(localfileName);
 			try {

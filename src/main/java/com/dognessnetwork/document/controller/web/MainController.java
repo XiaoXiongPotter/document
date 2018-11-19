@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,6 +40,26 @@ import cn.hutool.json.JSONObject;
  */
 @Controller
 public class MainController {
+	
+	@PostMapping(name = "upload", value="/upload")
+	@ResponseBody
+    public String  upload_image(@RequestParam("file") MultipartFile file, HttpServletRequest request){
+		StringBuffer url = request.getRequestURL();  
+        String tempContextUrl = url.delete(url.length() - request.getRequestURI().length(), url.length()).toString(); 
+        Console.log(tempContextUrl);
+        
+		String filename = UploadFileUtil.generatorFileName() + "." + UploadFileUtil.getMultipartFileType(file);
+		System.out.println("filename:" + filename);
+		JSONObject	res	=	new	JSONObject();
+		String path = request.getSession().getServletContext().getRealPath("/");
+		System.out.println("path:"+path);
+		UploadFileUtil.saveImage(file, path, filename);
+		String returnUrl = tempContextUrl + "/img/"+filename;
+		res.put("link", returnUrl);
+		System.out.println("obj:"+res.toString());
+		return res.toString();
+    }
+	
 	@RequestMapping(value = "/image", name = "image")
 	@ResponseBody
 	public JSONObject image(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
